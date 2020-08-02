@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+        .slide-area{
+
+        }
+        .slidea-area .slider{
+
+        }
+        .container{
+            max-width: 300px;
+            margin: 50px auto;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .btn {
+            width: 60px;
+            height: 32px;
+            text-align: center;
+            background-color: green;
+            color: white;
+            border: 1px solid black;
+            cursor: pointer;
+            padding: 8px;
+            margin: 8px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <input type="color" id ="color-val"/>
+        <div class="btn" id ="send-btn">Send</div>
+        <div class=btn id="chase-btn">Chase</div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script >
+
+        let socket = io();
+
+        window,addEventListener('load', function(){
+            let sendBtn = document.getElementById('send-btn');
+
+            sendBtn.addEventListener('click', function(){
+                const inputVal = document.getElementById("color-val").value
+                socket.emit("light", inputVal)
+            })
+
+            let chaseBtn = document.getElementById("chase-btn");
+
+            chaseBtn.addEventListener('click', function() {
+                console.log("clicked chase")
+                let i = 0;
+                const chase = setInterval(() => {
+                    let newSequence = [];
+                    for (let j = 0; j < sequence.length; j++){
+                        if (j <1){
+                            newSequence.push(sequence[sequence.length - 1])
+                        }else {
+                            newSequence.push (sequence[j - 1])
+                        }
+                    }
+
+                    socket.emit("light", newSequence)
+
+                    if (i >= sequence.length -1){
+                        clearInterval(chase)
+                    }
+                    i++
+                }, 1000);
+            })
+        })
+
+        socket.on('light', function(data){
+            document.getElementById("light").checked = data;
+            socket.emit('light', data)
+        })
+    </script>
+</body>
+</html>
