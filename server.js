@@ -70,8 +70,9 @@ const createChase = (initState, pattern, color, stripLength) => {
 const runChase = (chase, stepLength) => {
     let i = 0;
     const runningChase = setInterval(() => {
+	console.log("i: ", i);
         setLeds(chase[i]);
-        if (i < chase.length) {
+        if (i < chase.length - 1 ) {
             i++;
         } else {
             i = 0;
