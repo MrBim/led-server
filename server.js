@@ -87,14 +87,28 @@ const createFirstStep = (initialState, color, stripLength) => {
 
     for (let i = 0; i < initArray.length; i++) {
         if (initialState.includes(i)) {
-            initArray[i] = formatColor(translateHexToRgb(color));
+            if (i > 0 ){
+                if (initArray[i - 1] === 0){
+                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
+                    console.log(initArray[i])
+                } else{
+                    initArray[i] = formatColor(translateHexToRgb(color));
+                }
+            } else {
+                if (!initialState.includes(initArray.length - 1)){
+                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
+                    console.log(initArray[i])
+                } else{
+                    initArray[i] = formatColor(translateHexToRgb(color));
+                }
+            }
         } else {
             initArray[i] = formatColor(translateHexToRgb("#000000"));
         }
     }
-    // console.log(initArray);
     return initArray;
 };
+
 
 const createSteps = (firstStep, stripLength) => {
     let initArray = new Array(stripLength);
