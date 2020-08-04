@@ -16,6 +16,7 @@ function handler(req, res) {
         return res.end();
     });
 }
+
 io.sockets.on("connection", function (socket) {
     socket.on("light", function (data) {
         console.log("data: ", data);
