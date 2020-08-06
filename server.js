@@ -71,9 +71,9 @@ const createChase = (initState, pattern, color, stripLength) => {
 const runChase = (chase, stepLength) => {
     let i = 0;
     const runningChase = setInterval(() => {
-	console.log("i: ", i);
+        console.log("i: ", i);
         setLeds(chase[i]);
-        if (i < chase.length - 1 ) {
+        if (i < chase.length - 1) {
             i++;
         } else {
             i = 0;
@@ -86,20 +86,23 @@ const createFirstStep = (initialState, color, stripLength) => {
     let initArray = new Array(stripLength);
 
     for (let i = 0; i < initArray.length; i++) {
+        // the current number is in the array of lit leds
         if (initialState.includes(i)) {
-            if (i > 0 ){
-                if (initArray[i - 1] === 0){
-                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
-                    console.log(initArray[i])
-                } else{
+            // it is not hte first led in the strip
+            if (i > 0) {
+                if (initArray[i - 1] === 0 || initState.includes(i + 1)) {
+                    initArray[i] = formatColor(translateHexToRgb(chroma.mix(color, "#000000", 1)));
+                    console.log(initArray[i]);
+                } else {
                     initArray[i] = formatColor(translateHexToRgb(color));
                 }
+                // else it is the first one in th e strip
             } else {
-                if (!initialState.includes(initArray.length - 1)){
-                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
-                    console.log(initArray[i])
-                } else{
+                // if the last led in the strip is lit
+                if (initialState.includes(initArray.length - 1)) {
                     initArray[i] = formatColor(translateHexToRgb(color));
+                } else {
+                    initArray[i] = formatColor(translateHexToRgb(chroma.mix(color, "#000000")));
                 }
             }
         } else {
@@ -108,7 +111,6 @@ const createFirstStep = (initialState, color, stripLength) => {
     }
     return initArray;
 };
-
 
 const createSteps = (firstStep, stripLength) => {
     let initArray = new Array(stripLength);
