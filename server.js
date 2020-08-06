@@ -83,7 +83,7 @@ const runChase = (chase, stepLength) => {
     runningChase = setInterval(() => {
 	// console.log("i: ", i);
         setLeds(chase[i]);
-        if (i < chase.length - 1 ) {
+        if (i < chase.length - 1) {
             i++;
         } else {
             i = 0;
@@ -96,6 +96,7 @@ const createFirstStep = (initialState, color, stripLength) => {
     let initArray = new Array(stripLength);
 
     for (let i = 0; i < initArray.length; i++) {
+        // the current number is in the array of lit leds
         if (initialState.includes(i)) {
             if (i > 0 ){
                 if (initArray[i - 1] === 0  || !initialState.includes(i + 1)){
@@ -106,6 +107,7 @@ const createFirstStep = (initialState, color, stripLength) => {
                 } else{
                     initArray[i] = formatColor(translateHexToRgb(color));
                 }
+                // else it is the first one in th e strip
             } else {
                 // accounting for the last LED in the strip being on in the pattern 
                 if (initialState.includes(initArray.length - 1)){
@@ -126,7 +128,6 @@ const createFirstStep = (initialState, color, stripLength) => {
     console.log("init step: ", initArray);
     return initArray;
 };
-
 
 const createSteps = (firstStep, stripLength) => {
     let initArray = new Array(stripLength);

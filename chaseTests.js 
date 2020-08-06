@@ -2,7 +2,7 @@
 // a description of the initial state,
 // a description of how it changes,
 // a base color
-let chroma = require('chroma-js');
+let chroma = require("chroma-js");
 
 const createChase = (initState, pattern, color, stripLength) => {
     // use initState to create the first step in the pattern
@@ -37,18 +37,19 @@ const createFirstStep = (initialState, color, stripLength) => {
 
     for (let i = 0; i < initArray.length; i++) {
         if (initialState.includes(i)) {
-            if (i > 0 ){
-                if (initArray[i - 1] === 0){
-                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
-                    console.log(initArray[i])
-                } else{
+            // TODO deal with [i + 1] === 0
+            if (i > 0) {
+                if (initArray[i - 1] === 0) {
+                    initArray[i] = formatColor(translateHexToRgb(chroma.mix(color, "#000000")));
+                    console.log(initArray[i]);
+                } else {
                     initArray[i] = formatColor(translateHexToRgb(color));
                 }
             } else {
-                if (!initialState.includes(initArray.length - 1)){
-                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
-                    console.log(initArray[i])
-                } else{
+                if (!initialState.includes(initArray.length - 1)) {
+                    initArray[i] = formatColor(translateHexToRgb(chroma.mix(color, "#000000")));
+                    console.log(initArray[i]);
+                } else {
                     initArray[i] = formatColor(translateHexToRgb(color));
                 }
             }
