@@ -1,9 +1,11 @@
 const http = require("http").createServer(handler);
-let ws281x = require("rpi-ws281x-native");
+// let ws281x = require("rpi-ws281x-native");
+let ws281x = require("./rpi-ws281x-native");
 let fs = require("fs");
 let io = require("socket.io")(http);
-
+const chroma = require('chroma-js');
 http.listen(8080);
+let runningChase;
 
 function handler(req, res) {
     fs.readFile(__dirname + "/public/index.html", function (err, data) {
@@ -20,8 +22,14 @@ function handler(req, res) {
 io.sockets.on("connection", function (socket) {
     socket.on("light", function (data) {
         console.log("data: ", data);
-        const startState = [0, 1, 2, 3, 4];
+        const startState = [
+            0, 1, 2, 3, 4, 25, 26, 27, 28, 29,  50, 51, 52, 53, 54,  75, 76, 77, 78, 79, 
+            100,101,102,103,104, 125,126,127,128,129, 150,151,152,153,154, 175,176,177,178,179, 
+            200,201,202,203,204, 225,226,227,228,229, 250,251,252,253,254, 275,276,277,278,279];
         const fullChase = createChase(startState, createSteps, data, NUM_LEDS);
+        if (runningChase)(
+            clearInterval(runningChase)
+        )
         runChase(fullChase, 1000 / 30);
     });
 });
@@ -42,6 +50,7 @@ function setLeds(lights) {
 
 function translateHexToRgb(hexStr) {
     let hex = hexStr;
+
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5), 16);
@@ -49,7 +58,7 @@ function translateHexToRgb(hexStr) {
 }
 
 function formatColor(colorObject) {
-    let brightness = 128;
+    let brightness = 255;
     g = (colorObject.r * brightness) / 255;
     r = (colorObject.g * brightness) / 255;
     b = (colorObject.b * brightness) / 255;
@@ -70,8 +79,9 @@ const createChase = (initState, pattern, color, stripLength) => {
 
 const runChase = (chase, stepLength) => {
     let i = 0;
-    const runningChase = setInterval(() => {
-	console.log("i: ", i);
+    
+    runningChase = setInterval(() => {
+	// console.log("i: ", i);
         setLeds(chase[i]);
         if (i < chase.length - 1 ) {
             i++;
@@ -88,24 +98,32 @@ const createFirstStep = (initialState, color, stripLength) => {
     for (let i = 0; i < initArray.length; i++) {
         if (initialState.includes(i)) {
             if (i > 0 ){
-                if (initArray[i - 1] === 0){
-                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
-                    console.log(initArray[i])
+                if (initArray[i - 1] === 0  || !initialState.includes(i + 1)){
+                    const mixedColor = chroma.mix(color, "#000000", 0.9).hex();
+                    console.log("included,, i > 0, prev step is 0: ", i, color ,mixedColor)
+
+                    initArray[i] = formatColor(translateHexToRgb(mixedColor));
                 } else{
                     initArray[i] = formatColor(translateHexToRgb(color));
                 }
             } else {
-                if (!initialState.includes(initArray.length - 1)){
-                    initArray[i] = formatColor(translateHexToRgb( chroma.mix(color, "#000000")));
-                    console.log(initArray[i])
+                // accounting for the last LED in the strip being on in the pattern 
+                if (initialState.includes(initArray.length - 1)){
+
+                    initArray[i] = formatColor(translateHexToRgb( color));
                 } else{
-                    initArray[i] = formatColor(translateHexToRgb(color));
+                    const mixedColor = chroma.mix(color, "#000000", 0.9).hex();
+                    console.log("included, i !> 0 : ", i, mixedColor)
+
+                    initArray[i] = formatColor(translateHexToRgb(mixedColor));
                 }
             }
         } else {
             initArray[i] = formatColor(translateHexToRgb("#000000"));
         }
     }
+
+    console.log("init step: ", initArray);
     return initArray;
 };
 

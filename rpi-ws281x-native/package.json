@@ -1,0 +1,65 @@
+{
+  "_args": [
+    [
+      "rpi-ws281x-native@0.10.0",
+      "/home/pi/Documents/led/led-server"
+    ]
+  ],
+  "_from": "rpi-ws281x-native@0.10.0",
+  "_id": "rpi-ws281x-native@0.10.0",
+  "_inBundle": false,
+  "_integrity": "sha512-10feoH/unpKW8OnmRk79/ExcXViuUDs9leiO1shkwstSFUITC0uBmjzjxN4zo2kfNZwvUpgpeeH+Q6GAJ0J71Q==",
+  "_location": "/rpi-ws281x-native",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "rpi-ws281x-native@0.10.0",
+    "name": "rpi-ws281x-native",
+    "escapedName": "rpi-ws281x-native",
+    "rawSpec": "0.10.0",
+    "saveSpec": null,
+    "fetchSpec": "0.10.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/rpi-ws281x-native/-/rpi-ws281x-native-0.10.0.tgz",
+  "_spec": "0.10.0",
+  "_where": "/home/pi/Documents/led/led-server",
+  "author": {
+    "name": "Martin Schuhfuss",
+    "email": "m.schuhfuss@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/beyondscreen/node-rpi-ws281x-native/issues"
+  },
+  "dependencies": {
+    "node-addon-api": "^3.0.0"
+  },
+  "description": "(raspberry-pi *only*) native bindings to control a strip of WS281x-LEDs with node.js",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "gypfile": true,
+  "homepage": "https://github.com/beyondscreen/node-rpi-ws281x-native",
+  "keywords": [
+    "raspberry",
+    "ws2811",
+    "ws2812",
+    "led",
+    "hardware"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "rpi-ws281x-native",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/beyondscreen/node-rpi-ws281x-native.git"
+  },
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "version": "0.10.0"
+}
